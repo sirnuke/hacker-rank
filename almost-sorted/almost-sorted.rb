@@ -24,11 +24,21 @@
 # SOFTWARE.
 #
 
-n = gets.to_i
-data = gets.split.map {|i| i.to_i }
+def parse_input
+  n = gets.to_i
+  data = gets.split.map {|i| i.to_i }
 
-$stderr.puts "#{n} != #{data.length}" if n != data.length
-$stderr.puts "2 <= #{n} <= 100000" unless 2 <= n and n <= 100000
+  $stderr.puts "#{n} != #{data.length}" if n != data.length
+  $stderr.puts "2 <= #{n} <= 100000" unless 2 <= n and n <= 100000
+
+  data
+end
+
+def find_bounds(data, minimum, maximum)
+  return mimimum, maximum
+end
+
+data = parse_input()
 
 start = 0
 ending = data.length - 1
