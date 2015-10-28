@@ -25,8 +25,32 @@
 #
 
 n = gets.to_i
-d = gets.split.map {|i| i.to_i }
+data = gets.split.map {|i| i.to_i }
 
-$stderr.puts "#{n} != #{d.length}" if n != d.length
+$stderr.puts "#{n} != #{data.length}" if n != data.length
 $stderr.puts "2 <= #{n} <= 100000" unless 2 <= n and n <= 100000
+
+start = 0
+ending = data.length - 1
+
+previous = -1
+
+while start < data.length
+  break if previous >= data[start]
+  previous = data[start]
+  start += 1
+end
+
+if start == data.length
+  puts "yes"
+  exit
+end
+
+while ending > start
+  break if previous >= data[start]
+  previous = data[ending]
+  ending -= 1
+end
+
+puts "start #{start} end #{ending}"
 
