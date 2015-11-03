@@ -11,7 +11,7 @@ function runtest()
 
   echo "${challenge}:"
   echo
-  failures=0
+  failures=
   dir=`basename $PWD`
   if [ "$dir" != "$challenge" ] ; then
     cd $challenge
@@ -29,12 +29,12 @@ function runtest()
       echo "[ PASSED ]"
     else
       echo "[ FAILED ]"
-      failures=$((failures + 1))
+      failures="#$name,$failures"
     fi
   done
 
   cd ..
-  if [ "$failures" -eq "0" ] ; then
+  if [ -z "$failures" ] ; then
     SUCCESSES="$challenge $SUCCESSES"
   else
     FAILURES="${challenge}($failures) $FAILURES"
