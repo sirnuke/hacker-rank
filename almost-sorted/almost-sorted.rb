@@ -58,9 +58,15 @@ def find_anomalies(data)
 end
 
 def is_valid(data, position)
-  return false if position > 0 && data[position - 1] > data[position]
-  return false if position < data.length - 1 && data[position + 1] < data[position]
-  return true
+  return is_valid_before(data, position) && is_valid_after(data, position)
+end
+
+def is_valid_before(data, position)
+  return (position <= 0 || data[position - 1] < data[position])
+end
+
+def is_valid_after(data, position)
+  return (position >= data.length - 1 || data[position + 1] > data[position])
 end
 
 def check_swap(data, first, second)
@@ -79,7 +85,23 @@ def check_reverse(data, anomalies)
     print_no if anomalies[i] - j > i
     i += 1
   end
-  print_yes :reverse, anomalies.first, anomalies.last + 1
+  first = anomalies.first
+  last = anomalies.last + 1
+
+  previous = data[first]
+  (first + 1..last).each do |i|
+    # Anomaly range has a value larger than previous? Not reversible
+    print_no if previous < data[i]
+    previous = data[i]
+  end
+
+  data[first], data[last] = data[last], data[first]
+
+  if is_valid_before(data, first) && is_valid_after(data, last)
+    print_yes :reverse, first, last
+  else
+    print_no
+  end
 end
 
 def print_yes(action, first = 0, second = 0)
