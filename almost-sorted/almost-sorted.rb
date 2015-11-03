@@ -24,12 +24,14 @@
 # SOFTWARE.
 #
 
+DEBUG_PRINT=false
+
 def parse_input
   n = gets.to_i
   data = gets.split.map {|i| i.to_i }
 
-  $stderr.puts "#{n} != #{data.length}" if n != data.length
-  $stderr.puts "2 <= #{n} <= 100000" unless 2 <= n and n <= 100000
+  $stderr.puts "#{n} != #{data.length}" if n != data.length and DEBUG_PRINT
+  $stderr.puts "2 <= #{n} <= 100000" if !(2 <= n and n <= 100000) and DEBUG_PRINT
 
   data
 end
@@ -55,6 +57,31 @@ def find_anomalies(data)
   anomalies
 end
 
+def is_valid(data, position)
+  return false if position > 0 && data[position - 1] > data[position]
+  return false if position < data.length - 1 && data[position + 1] < data[position]
+  return true
+end
+
+def check_swap(data, first, second)
+  data[first], data[second] = data[second], data[first]
+  if is_valid(data, first) && is_valid(data, second)
+    print_yes(:swap, first, second)
+  else
+    print_no
+  end
+end
+
+def check_reverse(data, anomalies)
+  i, j = 1, anomalies.first
+  while i < anomalies.length
+    # Non-continuous? Not reversible
+    print_no if anomalies[i] - j > i
+    i += 1
+  end
+  print_yes :reverse, anomalies.first, anomalies.last + 1
+end
+
 def print_yes(action, first = 0, second = 0)
   puts "yes"
   if action == :swap || action == :reverse
@@ -71,17 +98,24 @@ end
 data = parse_input()
 anomalies = find_anomalies(data)
 
+$stderr.print "anomalies #{anomalies.length}: #{anomalies.join ','}" if DEBUG_PRINT
+
 # No anomalies? We're done
 print_yes :none if anomalies.length == 0
 
-# One anomaly? Check if we can swap just after
+# One anomaly? Might be able to swap
 if anomalies.length == 1
-  anomaly = anomalies.first
-  if data[anomaly + 1] < data[anomaly] && (anomaly == 0 || data[anomaly - 1] < data[anomaly + 1])
-    print_yes :swap, anomaly, anomaly + 1
-  else
-    print_no
+  check_swap(data, anomalies.first, anomalies.first + 1)
+end
+
+# Two and non-continuous? Might be able to swap
+if anomalies.length == 2
+  first = anomalies[0]
+  second = anomalies[1]
+  if second - first > 1
+    check_swap(data, first, second)
   end
 end
 
-puts anomalies
+# Otherwise, try to reverse
+check_reverse(data, anomalies)
