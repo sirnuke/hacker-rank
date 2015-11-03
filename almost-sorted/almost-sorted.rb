@@ -41,10 +41,12 @@ def find_anomalies(data)
   bound = 0
 
   while bound < data.length
-    if data[bound] > previous
-      baseline = previous
-    else
+    if data[bound] < baseline
+      anomalies << bound
+    elsif data[bound] < previous
       anomalies << bound - 1
+    else
+      baseline = previous
     end
     previous = data[bound]
     bound += 1
@@ -53,14 +55,33 @@ def find_anomalies(data)
   anomalies
 end
 
+def print_yes(action, first = 0, second = 0)
+  puts "yes"
+  if action == :swap || action == :reverse
+    puts "#{action} #{first + 1} #{second + 1}"
+  end
+  exit
+end
+
+def print_no()
+  puts "no"
+  exit
+end
+
 data = parse_input()
 anomalies = find_anomalies(data)
 
 # No anomalies? We're done
-if anomalies.length == 0
-  puts "yes"
-  exit
-end
+print_yes :none if anomalies.length == 0
 
+# One anomaly? Check if we can swap just after
+if anomalies.length == 1
+  anomaly = anomalies.first
+  if data[anomaly + 1] < data[anomaly] && (anomaly == 0 || data[anomaly - 1] < data[anomaly + 1])
+    print_yes :swap, anomaly, anomaly + 1
+  else
+    print_no
+  end
+end
 
 puts anomalies
