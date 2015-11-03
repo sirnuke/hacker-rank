@@ -34,33 +34,33 @@ def parse_input
   data
 end
 
-def find_bounds(data, minimum, maximum)
-  return mimimum, maximum
+def find_anomalies(data)
+  previous = -1
+  baseline = -1
+  anomalies = []
+  bound = 0
+
+  while bound < data.length
+    if data[bound] > previous
+      baseline = previous
+    else
+      anomalies << bound - 1
+    end
+    previous = data[bound]
+    bound += 1
+  end
+
+  anomalies
 end
 
 data = parse_input()
+anomalies = find_anomalies(data)
 
-start = 0
-ending = data.length - 1
-
-previous = -1
-
-while start < data.length
-  break if previous >= data[start]
-  previous = data[start]
-  start += 1
-end
-
-if start == data.length
+# No anomalies? We're done
+if anomalies.length == 0
   puts "yes"
   exit
 end
 
-while ending > start
-  break if previous >= data[start]
-  previous = data[ending]
-  ending -= 1
-end
 
-puts "start #{start} end #{ending}"
-
+puts anomalies
