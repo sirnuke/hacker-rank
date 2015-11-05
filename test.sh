@@ -1,8 +1,23 @@
 #!/bin/bash
 
-ALL="almost-sorted"
+ALL="almost-sorted acm-icpc-team"
 FAILURES=
 SUCCESSES=
+
+function compile()
+{
+  challenge=$1
+  shift
+
+  echo "Building ${challenge}"
+  dir=`basename $PWD`
+  if [ "$dir" != "$challenge" ] ; then
+    cd $challenge
+  fi
+
+  make
+  cd ..
+}
 
 function runtest()
 {
@@ -58,6 +73,10 @@ for arg in $challenges ; do
   case $arg in
     almost-sorted)
       runtest "almost-sorted" "./almost-sorted.rb"
+      ;;
+    acm-icpc-team)
+      compile "acm-icpc-team"
+      runtest "acm-icpc-team" "./acm-icpc-team"
       ;;
     *)
       echo "Unknown challenge $arg"
