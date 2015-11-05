@@ -1,2 +1,4 @@
 .*.sw*
 */tests/*.run
+*.o
+acm-icpc-team/acm-icpc-team
