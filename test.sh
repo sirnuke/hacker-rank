@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ALL="almost-sorted acm-icpc-team"
+ALL="almost-sorted acm-icpc-team morgan-and-a-string"
 FAILURES=
 SUCCESSES=
 
@@ -77,6 +77,9 @@ for arg in $challenges ; do
     acm-icpc-team)
       compile "acm-icpc-team"
       runtest "acm-icpc-team" "./acm-icpc-team"
+      ;;
+    morgan-and-a-string)
+      runtest "morgan-and-a-string" "./morgan-and-a-string.rb"
       ;;
     *)
       echo "Unknown challenge $arg"
