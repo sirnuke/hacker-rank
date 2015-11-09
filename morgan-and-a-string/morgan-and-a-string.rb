@@ -28,32 +28,35 @@
 DEBUG_PRINT=true
 
 def find(first, second, position)
-  if first.length == 0 && second.length == 0
-    return :done, 0
-  elsif first.length == 0
-    return :second, second.length
-  elsif second.length == 0
-    return :first, first.length
-  elsif position >= first.length && position >= second.length
-    return :first, 1 #first.length
-  elsif position >= first.length
-    if first[position] < second[position - 1]
+  while true
+    if first.length == 0 && second.length == 0
+      return :done, 0
+    elsif first.length == 0
+      return :second, second.length
+    elsif second.length == 0
+      return :first, first.length
+    elsif position >= first.length && position >= second.length
+      return :first, 1 #first.length
+    elsif position >= first.length
+      if first[position] < second[position - 1]
+        return :first, 1 #position + 1
+      else
+        return :second, 1 #second.length
+      end
+    elsif position >= second.length
+      if second[position] < first[position - 1]
+        return :second, 1 #position + 1
+      else
+        return :first, 1 #first.length
+      end
+    elsif first[position] < second[position]
       return :first, 1 #position + 1
-    else
-      return :second, 1 #second.length
-    end
-  elsif position >= second.length
-    if second[position] < first[position - 1]
+    elsif first[position] > second[position]
       return :second, 1 #position + 1
     else
-      return :first, 1 #first.length
+      position += 1
+      #return find(first, second, position + 1)
     end
-  elsif first[position] < second[position]
-    return :first, 1 #position + 1
-  elsif first[position] > second[position]
-    return :second, 1 #position + 1
-  else
-    return find(first, second, position + 1)
   end
 end
 
@@ -83,7 +86,5 @@ gets.to_i.times do
     end
   end
   puts solution.join ''
-  #puts first.join ','
-  #puts second.join ','
 end
 
