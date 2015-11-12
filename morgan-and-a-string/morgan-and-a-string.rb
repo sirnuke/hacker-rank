@@ -25,38 +25,64 @@
 # SOFTWARE.
 #
 
-DEBUG_PRINT=true
+DEBUG_PRINT=false
+
+def completed?(data, position)
+  (position >= data.length)
+end
 
 def find(first, second, position)
+  # Quick out
+  if first.length == 0 && second.length == 0
+    return :done, 0
+  elsif first.length == 0
+    return :second, second.length
+  elsif second.length == 0
+    return :first, first.length
+  end
+
+  previous = nil
+  length = 0
+  block = true
+
   while true
-    if first.length == 0 && second.length == 0
-      return :done, 0
-    elsif first.length == 0
-      return :second, second.length
-    elsif second.length == 0
-      return :first, first.length
-    elsif position >= first.length && position >= second.length
-      return :first, 1 #first.length
-    elsif position >= first.length
-      if first[position] < second[position - 1]
-        return :first, 1 #position + 1
-      else
-        return :second, 1 #second.length
+    first_completed = completed?(first, position)
+    second_completed = completed?(second, position)
+
+    $stderr.puts "Position #{position} first completed? #{first_completed} second complete? #{second_completed}" if DEBUG_PRINT
+
+    # Identical? pick'em
+    if first_completed && second_completed
+      return :first, length
+    # At the end of one stacks
+    elsif first_completed
+      if first.last < second[position]
+        return :first, length
+      elsif first.last > second[position]
+        return :second, length
       end
-    elsif position >= second.length
-      if second[position] < first[position - 1]
-        return :second, 1 #position + 1
-      else
-        return :first, 1 #first.length
+    elsif second_completed
+      if second.last < first[position]
+        return :second, length
+      elsif second.last > first[position]
+        return :first, length
       end
-    elsif first[position] < second[position]
-      return :first, 1 #position + 1
-    elsif first[position] > second[position]
-      return :second, 1 #position + 1
+    # Both have items remaining
     else
-      position += 1
-      #return find(first, second, position + 1)
+      if first[position] < second[position]
+        return :first, length + 1
+      elsif first[position] > second[position]
+        return :second, length + 1
+      end
+      if block && (previous.nil? || first[position] <= previous)
+        previous = first[position]
+        length += 1
+        $stderr.puts "Previous is now #{previous}, block length is #{length}, position is #{position}" if DEBUG_PRINT
+      else
+        block = false
+      end
     end
+    position += 1
   end
 end
 
