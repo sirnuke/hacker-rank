@@ -111,7 +111,9 @@ int main()
   for (int i = 0; i < Q; i++)
   {
     getline(cin, line);
-    if (!search(&root, line, value))
+    if (line.find('~') == string::npos)
+      cout << "Not Found!" << endl;
+    else if (!search(&root, line, value))
       cout << "Not Found!" << endl;
     else
       cout << value << endl;
