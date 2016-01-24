@@ -1,0 +1,15 @@
+12 2
+<a>
+<b>
+<c name = "Name1">
+</c>
+</b>
+</a>
+<A>
+<b>
+<c name = "Name2">
+</c>
+</b>
+</A>
+a.b.c~name
+A.b.c~name
