@@ -1,0 +1,12 @@
+6 5
+<tag1 value = "Hello World" okay = "">
+<tag2 name = "Name 1">
+<tag3 attr = "">
+</tag3>
+</tag2>
+</tag1>
+tag1.tag2~name
+tag1~name
+tag1~value
+tag1~okay
+tag1.tag2.tag3~attr
