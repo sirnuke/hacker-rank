@@ -1,0 +1,10 @@
+6 3
+<t >
+<tag3>
+<tag2 name = "Name1">
+</tag2>
+</tag3>
+</t>
+t.tag3.tag2~name
+t~name
+t~value
