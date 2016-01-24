@@ -1,0 +1,13 @@
+4 8
+<tag1 value = "HelloWorld" okay = "what">
+<tag2 name = "Name1">
+</tag2>
+</tag1>
+tag1.tag2~name
+tag1~name
+tag1~value
+tag2~name
+tag2~what
+tag1~okay
+tag5~value
+tag1.tag5~name
