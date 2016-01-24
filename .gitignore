@@ -2,3 +2,4 @@
 */tests/*.run
 *.o
 acm-icpc-team/acm-icpc-team
+code-cpp-3-attribute-parser/attribute-parser
