@@ -1,6 +1,5 @@
 #include <unordered_map>
 #include <iostream>
-#include <sstream>
 
 using namespace std;
 
@@ -48,8 +47,8 @@ int main()
   int N, Q;
   Tag root("[root]", NULL);
   Tag *current = &root, *tag;
+  size_t pos;
   string line, chunk, name, value;
-  stringstream ss;
   cin >> N;
   cin >> Q;
 
@@ -66,10 +65,11 @@ int main()
     }
     else
     {
-      ss.clear();
-      ss.str(line);
-      ss >> chunk;
-      name = chunk.substr(1);
+      pos = line.find(' ');
+      if (pos == string::npos)
+        name = line.substr(1);
+      else
+        name = line.substr(1, pos - 1);
       if (name.back() == '>')
       {
         name = name.substr(0, name.length() - 1);
@@ -78,21 +78,29 @@ int main()
       }
       else
       {
+        line = line.substr(pos + 1);
         tag = new Tag(name, current);
         cerr << "Opening attribute tag " << name << endl;
         while (true)
         {
-          ss >> name;
-          ss >> chunk;
-          ss >> chunk;
-          value = chunk.substr(1, chunk.find("\"", 1) - 1);
+          pos = line.find('"');
+          pos = line.find('"', pos + 1);
+          chunk = line.substr(0, pos + 1);
+          cerr << "Full attribute is [" << chunk << "]" << endl;
+          line = line.substr(pos + 1);
+          name = chunk.substr(0, chunk.find(' '));
+          pos = chunk.find('"');
+          value = chunk.substr(pos + 1);
+          value = value.substr(0, value.length() - 1);
 
           tag->attributes[name] = value;
 
           cerr << "Adding attribute " << name << ".." << value << endl;
 
-          if (chunk.back() == '>')
+          if (line.front() == '>')
             break;
+          else
+            line = line.substr(1);
         }
       }
       current->children[tag->name] = tag;
