@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-DEBUG=true
+DEBUG=false
 
 gets.to_i.times do
   n = gets.to_i
