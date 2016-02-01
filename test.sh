@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ALL="almost-sorted acm-icpc-team morgan-and-a-string code-cpp-3-attribute-parser"
+ALL="almost-sorted acm-icpc-team morgan-and-a-string code-cpp-3-attribute-parser sansa-and-xor"
 FAILURES=
 SUCCESSES=
 
@@ -84,6 +84,9 @@ for arg in $challenges ; do
     code-cpp-3-attribute-parser)
       compile "code-cpp-3-attribute-parser"
       runtest "code-cpp-3-attribute-parser" "./attribute-parser"
+      ;;
+    sansa-and-xor)
+      runtest "sansa-and-xor" "./sansa-and-xor.rb"
       ;;
     *)
       echo "Unknown challenge $arg"
